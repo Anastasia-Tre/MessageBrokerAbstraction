@@ -1,4 +1,4 @@
-﻿namespace Message
+﻿namespace Usage
 {
     internal class Program
     {
@@ -8,3 +8,4 @@
         }
     }
 }
+
