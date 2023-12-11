@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{308134E5-A9A4-4E85-9344-4F3506C1073D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Providers.Redis", "Providers.Redis\Providers.Redis.csproj", "{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Providers.Redis", "Providers.Redis\Providers.Redis.csproj", "{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serializers", "Serializers", "{EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serializers.Json", "Serializers.Json\Serializers.Json.csproj", "{89106596-305B-4ABF-9A6C-35D7A672049E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{8397477F-E12C-48B4-AB5E-503C1E2682CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,12 +35,21 @@ Global
 		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89106596-305B-4ABF-9A6C-35D7A672049E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89106596-305B-4ABF-9A6C-35D7A672049E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89106596-305B-4ABF-9A6C-35D7A672049E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89106596-305B-4ABF-9A6C-35D7A672049E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
+		{89106596-305B-4ABF-9A6C-35D7A672049E} = {EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
