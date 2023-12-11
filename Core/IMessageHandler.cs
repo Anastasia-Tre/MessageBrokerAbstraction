@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Core;
 
-namespace Core
+public interface IMessageHandler
 {
-    public interface IMessageHandler
-    {
-        void OnStart();
-        void OnMessage();
-        void OnEnd();
-    }
+    void OnStart();
+    void OnMessage();
+    void OnEnd();
 }
