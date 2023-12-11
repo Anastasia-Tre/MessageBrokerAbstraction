@@ -5,7 +5,11 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usage", "Usage\Usage.csproj", "{222148E0-4FC0-4167-B312-5D76786D5A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{308134E5-A9A4-4E85-9344-4F3506C1073D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Providers.Redis", "Providers.Redis\Providers.Redis.csproj", "{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,16 @@ Global
 		{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
