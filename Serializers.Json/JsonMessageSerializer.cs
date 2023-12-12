@@ -24,8 +24,6 @@ namespace Serialization.Json
         {
         }
 
-        #region Implementation of IMessageSerializer
-
         public byte[] Serialize(Type t, object message)
         {
             var jsonPayload = JsonConvert.SerializeObject(message, t, _serializerSettings);
@@ -50,7 +48,5 @@ namespace Serialization.Json
                 throw;
             }
         }
-
-        #endregion
     }
 }
