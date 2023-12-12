@@ -1,9 +1,8 @@
-﻿namespace MessageBroker.Core
-{
-    public class MessageBrokerSettings
-    {
-        public IServiceProvider ServiceProvider;
+﻿namespace MessageBroker.Core;
 
-        public Type SerializerType { get; set; }
-    }
+public class MessageBrokerSettings
+{
+    public IServiceProvider ServiceProvider;
+
+    public Type SerializerType { get; set; }
 }

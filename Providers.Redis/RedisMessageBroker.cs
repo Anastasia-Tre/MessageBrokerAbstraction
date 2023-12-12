@@ -1,6 +1,5 @@
-﻿namespace Provider.Redis
+﻿namespace Provider.Redis;
+
+public class RedisMessageBroker : MessageBrokerBase
 {
-    public class RedisMessageBroker : MessageBrokerBase
-    {
-    }
 }
