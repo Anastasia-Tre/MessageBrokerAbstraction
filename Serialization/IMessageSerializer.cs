@@ -1,4 +1,4 @@
-﻿namespace Serialization;
+﻿namespace Serialization.Core;
 
 public interface IMessageSerializer
 {
