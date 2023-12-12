@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Serialization\Serialization.csproj" />
+    <ProjectReference Include="..\Serialization\Serialization.Core.csproj" />
   </ItemGroup>
 
 </Project>

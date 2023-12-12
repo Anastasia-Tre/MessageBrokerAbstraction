@@ -5,17 +5,21 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usage", "Usage\Usage.csproj", "{222148E0-4FC0-4167-B312-5D76786D5A67}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker.Core", "Core\MessageBroker.Core.csproj", "{976030D2-86DB-44B8-BEEE-01FFC1AA70E3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Providers", "Providers", "{308134E5-A9A4-4E85-9344-4F3506C1073D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Provider", "Provider", "{308134E5-A9A4-4E85-9344-4F3506C1073D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Providers.Redis", "Providers.Redis\Providers.Redis.csproj", "{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Redis", "Providers.Redis\Provider.Redis.csproj", "{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serializers", "Serializers", "{EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serializers.Json", "Serializers.Json\Serializers.Json.csproj", "{89106596-305B-4ABF-9A6C-35D7A672049E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.Json", "Serializers.Json\Serialization.Json.csproj", "{89106596-305B-4ABF-9A6C-35D7A672049E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serialization", "Serialization\Serialization.csproj", "{8397477F-E12C-48B4-AB5E-503C1E2682CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.Core", "Serialization\Serialization.Core.csproj", "{8397477F-E12C-48B4-AB5E-503C1E2682CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Core", "Provider.Core\Provider.Core.csproj", "{71CF273F-1860-4804-B402-60C8EA834504}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{B6C237EC-81F9-4A8B-A94C-0C6CDA727A02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,13 +47,20 @@ Global
 		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8397477F-E12C-48B4-AB5E-503C1E2682CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71CF273F-1860-4804-B402-60C8EA834504}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CF273F-1860-4804-B402-60C8EA834504}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CF273F-1860-4804-B402-60C8EA834504}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CF273F-1860-4804-B402-60C8EA834504}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{976030D2-86DB-44B8-BEEE-01FFC1AA70E3} = {B6C237EC-81F9-4A8B-A94C-0C6CDA727A02}
 		{DC54E91F-D3BD-4FDC-9127-128EFD93D4FF} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 		{89106596-305B-4ABF-9A6C-35D7A672049E} = {EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}
+		{8397477F-E12C-48B4-AB5E-503C1E2682CB} = {EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}
+		{71CF273F-1860-4804-B402-60C8EA834504} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
