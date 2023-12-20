@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Text;
-using MessageBroker.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Serialization.Core;
+using MessageBroker.Core.MessageBroker;
 
 namespace Serialization.Json;
 
