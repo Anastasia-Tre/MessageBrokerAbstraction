@@ -1,4 +1,4 @@
-﻿namespace MessageBroker.Core;
+﻿namespace MessageBroker.Core.Publisher;
 
 public interface IPublisher
 {

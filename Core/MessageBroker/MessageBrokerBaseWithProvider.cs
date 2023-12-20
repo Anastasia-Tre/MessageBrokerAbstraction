@@ -1,11 +1,4 @@
-﻿using MessageBroker.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Provider.Core
+﻿namespace MessageBroker.Core.MessageBroker
 {
     public abstract class MessageBrokerBase<TProviderSettings> : MessageBrokerBase 
         where TProviderSettings : class

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Serialization.Core;
 
-namespace MessageBroker.Core;
+namespace MessageBroker.Core.MessageBroker;
 
 public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
 {

@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using MessageBroker.Core.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 using Serialization.Core;
-using MessageBroker.Core.Exceptions;
 
-namespace MessageBroker.Core;
+namespace MessageBroker.Core.MessageBroker;
 
 public class MessageBrokerBuilder
 {

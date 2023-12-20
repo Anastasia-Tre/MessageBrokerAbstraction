@@ -1,4 +1,4 @@
-﻿namespace MessageBroker.Core;
+﻿namespace MessageBroker.Core.MessageBroker;
 
 public class MessageBrokerSettings
 {
