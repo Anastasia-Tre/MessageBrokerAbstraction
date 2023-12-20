@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StackExchange.Redis" Version="2.7.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\MessageBroker.Core.csproj" />
-    <ProjectReference Include="..\Provider.Core\Provider.Core.csproj" />
+    <ProjectReference Include="..\Serialization.Core\Serialization.Core.csproj" />
   </ItemGroup>
 
 </Project>
