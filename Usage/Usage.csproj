@@ -7,4 +7,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Provider\Provider.Redis\Provider.Redis.csproj" />
+    <ProjectReference Include="..\Serialization\Serialization.Json\Serialization.Json.csproj" />
+    <ProjectReference Include="..\Tools\SecretStore\SecretStore.csproj" />
+  </ItemGroup>
+
 </Project>

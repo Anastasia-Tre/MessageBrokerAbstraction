@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serialization.Json", "Seria
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker.Core", "Core\MessageBroker.Core\MessageBroker.Core.csproj", "{93483057-DC06-4692-9B7E-9045121A4722}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{76CC5A85-07F3-4BFC-92D3-B94F4FF40F5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecretStore", "Tools\SecretStore\SecretStore.csproj", "{1213774A-0334-4F03-BAD6-7925DDA89919}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{93483057-DC06-4692-9B7E-9045121A4722}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93483057-DC06-4692-9B7E-9045121A4722}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93483057-DC06-4692-9B7E-9045121A4722}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1213774A-0334-4F03-BAD6-7925DDA89919}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1213774A-0334-4F03-BAD6-7925DDA89919}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1213774A-0334-4F03-BAD6-7925DDA89919}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1213774A-0334-4F03-BAD6-7925DDA89919}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +69,7 @@ Global
 		{317E0355-1F11-4326-BCA1-87DF35EAE397} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 		{3B43D9AC-986F-47CD-975C-77902A233018} = {EE290804-DF69-4EB9-8BD6-D2E1B1A97C01}
 		{93483057-DC06-4692-9B7E-9045121A4722} = {B6C237EC-81F9-4A8B-A94C-0C6CDA727A02}
+		{1213774A-0334-4F03-BAD6-7925DDA89919} = {76CC5A85-07F3-4BFC-92D3-B94F4FF40F5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
