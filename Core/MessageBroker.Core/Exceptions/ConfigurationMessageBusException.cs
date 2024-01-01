@@ -1,16 +1,16 @@
 ﻿namespace MessageBroker.Core.Exceptions;
 
-public class ConfigurationMessageBusException : MessageBrokerException
+public class ConfigurationMessageBrokerException : MessageBrokerException
 {
-    public ConfigurationMessageBusException()
+    public ConfigurationMessageBrokerException()
     {
     }
 
-    public ConfigurationMessageBusException(string message) : base(message)
+    public ConfigurationMessageBrokerException(string message) : base(message)
     {
     }
 
-    public ConfigurationMessageBusException(string message, Exception innerException) : base(message, innerException)
+    public ConfigurationMessageBrokerException(string message, Exception innerException) : base(message, innerException)
     {
     }
 }
