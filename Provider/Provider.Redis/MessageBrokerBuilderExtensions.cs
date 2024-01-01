@@ -9,9 +9,15 @@ namespace Provider.Redis
 {
     public static class MessageBrokerBuilderExtensions
     {
-        public static MessageBrokerBuilder WithProviderRedis(this MessageBrokerBuilder mbb, RedisMessageBrokerSettings redisSettings)
+        public static MessageBrokerBuilder WithProviderRedis(this MessageBrokerBuilder mbb, Action<RedisMessageBrokerSettings> configure)
         {
-            return mbb.WithProvider(settings => new RedisMessageBroker(settings, redisSettings));
+            if (mbb == null) throw new ArgumentNullException(nameof(mbb));
+            if (configure == null) throw new ArgumentNullException(nameof(configure));
+
+            var providerSettings = new RedisMessageBrokerSettings();
+            configure(providerSettings);
+
+            return mbb.WithProvider(settings => new RedisMessageBroker(settings, providerSettings));
         }
     }
 }

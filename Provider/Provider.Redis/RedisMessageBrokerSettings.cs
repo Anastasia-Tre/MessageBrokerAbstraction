@@ -10,14 +10,18 @@ namespace Provider.Redis
 {
     public class RedisMessageBrokerSettings
     {
-        public string Configuration { get; set; }
+        public string ConnectionString { get; set; }
         
         public Func<ConnectionMultiplexer> ConnectionFactory { get; set; }
         
-        public RedisMessageBrokerSettings(string configuration)
+        public RedisMessageBrokerSettings()
         {
-            Configuration = configuration;
-            ConnectionFactory = () => ConnectionMultiplexer.Connect(Configuration);
+            ConnectionFactory = () => ConnectionMultiplexer.Connect(ConnectionString);
+        }
+
+        public RedisMessageBrokerSettings(string connectionString) : this()
+        {
+            ConnectionString = connectionString;
         }
     }
 }
