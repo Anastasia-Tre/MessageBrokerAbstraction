@@ -12,6 +12,7 @@ public static class MessageBrokerBuilderExtensions
 {
     public static MessageBrokerBuilder AddJsonSerializer(this MessageBrokerBuilder mbb, Encoding encoding = null, JsonSerializerSettings jsonSerializerSettings = null)
     {
+        mbb.WithSerializer(new JsonMessageSerializer());
         mbb.PostConfigurationActions.Add(services =>
         {
             services.TryAddSingleton(svp 

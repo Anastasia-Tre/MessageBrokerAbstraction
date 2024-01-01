@@ -6,7 +6,7 @@ using Serialization.Core;
 
 namespace Serialization.Json;
 
-internal class JsonMessageSerializer : IMessageSerializer
+public class JsonMessageSerializer : IMessageSerializer
 {
     private readonly ILogger _logger;
     private readonly Encoding _encoding;

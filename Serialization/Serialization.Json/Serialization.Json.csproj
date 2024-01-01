@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\MessageBroker.Core\MessageBroker.Core.csproj" />
     <ProjectReference Include="..\Serialization.Core\Serialization.Core.csproj" />
   </ItemGroup>
 
