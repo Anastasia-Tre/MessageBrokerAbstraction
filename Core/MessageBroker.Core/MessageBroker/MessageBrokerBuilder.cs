@@ -44,7 +44,7 @@ public class MessageBrokerBuilder
     public IMessageBroker Build()
     {
         if (_factory is null)
-            throw new ConfigurationMessageBusException("The bus provider was not configured. Check the MessageBus configuration and ensure the has the '.WithProviderXxx()' setting for one of the available transports.");
+            throw new ConfigurationMessageBrokerException("The broker provider was not configured. Check the MessageBroker configuration and ensure the has the '.WithProviderXxx()' setting for one of the available providers.");
 
         return _factory(Settings);
     }
