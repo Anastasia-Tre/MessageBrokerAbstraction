@@ -1,5 +1,8 @@
-﻿using MessageBroker.Core.MessageBroker;
+﻿using MessageBroker.Core.DI;
+using MessageBroker.Core.MessageBroker;
+using MessageBroker.Core.Subscriber;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Provider.Redis;
 using Serialization.Json;
@@ -12,6 +15,7 @@ internal class Program
         .CreateDefaultBuilder(args)
         .ConfigureServices((ctx, services) =>
         {
+            services.AddHostedService<MainProgram>();
             services
                 .AddMessageBroker(mbb =>
                 {
@@ -29,13 +33,102 @@ internal class Program
                         Secrets.Service.PopulateSecrets("Redis:ConnectionString");
                     var redisConnectionString = "localhost:6379";
 
-                    mbb.AddJsonSerializer()
+                    mbb.AddServicesFromAssemblyContaining<AddCommand>()
+                        .AddJsonSerializer()
                         .WithProviderRedis(cfg =>
-                            cfg.ConnectionString = redisConnectionString);
+                            cfg.ConnectionString = redisConnectionString)
 
+                        .SetPublisher<AddCommand>(x => x.DefaultTopic("AddCommand"))
+                        .SetSubscriber<AddCommand>(x =>
+                            x.Topic("AddCommand")
+                                .WithSubscriber<AddCommandSubscriber>())
 
+                        .SetPublisher<SubtractCommand>(x =>
+                            x.DefaultTopic("SubtractCommand"))
+                        .SetSubscriber<SubtractCommand>(x =>
+                            x.Topic("SubtractCommand")
+                                .WithSubscriber<SubtractCommandSubscriber>())
+                        ;
                 });
         })
         .Build()
         .RunAsync();
+}
+
+
+public class MainProgram : IHostedService
+{
+    private readonly IMessageBroker _bus;
+    private readonly Random _random = new();
+    private volatile bool _canRun = true;
+    private Task _task;
+
+    public MainProgram(IMessageBroker bus) => _bus = bus;
+
+    public Task StartAsync(CancellationToken cancellationToken)
+    {
+        var addTask = Task.Factory.StartNew(AddLoop, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        _task = Task.WhenAll(addTask);
+        return Task.CompletedTask;
+    }
+
+    public async Task StopAsync(CancellationToken cancellationToken)
+    {
+        _canRun = false;
+        await _task;
+    }
+
+    protected async Task AddLoop()
+    {
+        while (_canRun)
+        {
+            var a = _random.Next(100);
+            var b = _random.Next(100);
+            var opId = Guid.NewGuid().ToString();
+
+            Console.WriteLine("Publisher: Sending numbers {0} and {1}", a, b);
+            try
+            {
+                await _bus.Publish(new AddCommand { OperationId = opId, Left = a, Right = b });
+                await _bus.Publish(new SubtractCommand { OperationId = opId, Left = a, Right = b });
+            } catch (Exception e)
+            {
+                Console.WriteLine("Publisher: publish error {0}", e);
+            }
+
+            await Task.Delay(1000); // Simulate some work
+        }
+    }
+}
+
+public class AddCommandSubscriber : ISubscriber<AddCommand>
+{
+    public async Task OnHandle(AddCommand message)
+    {
+        Console.WriteLine("Subscriber: Adding {0} and {1} gives {2}", message.Left, message.Right, message.Left + message.Right);
+        await Task.Delay(500); // Simulate some work
+    }
+}
+
+public class SubtractCommandSubscriber : ISubscriber<SubtractCommand>
+{
+    public async Task OnHandle(SubtractCommand message)
+    {
+        Console.WriteLine("Subscriber: Subracting {0} and {1} gives {2}", message.Left, message.Right, message.Left - message.Right);
+        await Task.Delay(500); // Simulate some work
+    }
+}
+
+public class AddCommand
+{
+    public string OperationId { get; set; }
+    public int Left { get; set; }
+    public int Right { get; set; }
+}
+
+public class SubtractCommand
+{
+    public string OperationId { get; set; }
+    public int Left { get; set; }
+    public int Right { get; set; }
 }

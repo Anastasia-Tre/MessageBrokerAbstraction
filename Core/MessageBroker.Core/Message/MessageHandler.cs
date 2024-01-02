@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks.Dataflow;
 using MessageBroker.Core.Exceptions;
 using MessageBroker.Core.MessageBroker;
 using MessageBroker.Core.Subscriber;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace MessageBroker.Core.Message
@@ -19,6 +21,7 @@ namespace MessageBroker.Core.Message
         //public string Path { get; }
 
         public SubscriberSettings SubscriberSettings { get; }
+        protected IReadOnlyCollection<ISubscriberInvokerSettings> _invokers;
 
         private readonly Func<TMessage, byte[]> _messagePayloadProvider;
         private readonly List<object> _instances;
@@ -37,11 +40,12 @@ namespace MessageBroker.Core.Message
             SubscriberSettings = subscriberSettings ?? throw new ArgumentNullException(nameof(subscriberSettings));
             _subscriberRuntimeInfo = new SubscriberRuntimeInfo(subscriberSettings);
             _messagePayloadProvider = messagePayloadProvider;
+            _invokers = subscriberSettings.Invokers.ToList();
 
             _instancesQueue = new BufferBlock<object>();
             _instances = new()
             {
-                MessageBroker.Settings.ServiceProvider.GetService(
+                MessageBroker.Settings.ServiceProvider.GetServices(
                     subscriberSettings.SubscriberType)
             };
             _instances.ForEach(x => _instancesQueue.Post(x));
@@ -50,13 +54,10 @@ namespace MessageBroker.Core.Message
         public virtual async Task HandleMessage(TMessage msg)
         {
             var msgPayload = _messagePayloadProvider(msg);
-            
-            string requestId = null;
             DateTimeOffset? expires = null;
 
             _logger.LogDebug("Deserializing message...");
             var message = MessageBroker.Serializer.Deserialize(SubscriberSettings.MessageType, msgPayload);
-
 
             // Verify if the message is already expired
             if (expires.HasValue)
@@ -77,17 +78,14 @@ namespace MessageBroker.Core.Message
                 }
             }
 
-            object response = null;
-            string responseError = null;
-
-            var subscriberInstance = await _instancesQueue.ReceiveAsync(MessageBroker.CancellationToken).ConfigureAwait(false);
+            var subscriberInstances = await _instancesQueue.ReceiveAsync(MessageBroker.CancellationToken).ConfigureAwait(false);
             try
             {
-                // the subscriber just subscribes to the message
-                var task = _subscriberRuntimeInfo.OnHandle(subscriberInstance, message);
-                await task.ConfigureAwait(false);
-
-                
+                foreach (var instance in (IEnumerable)subscriberInstances)
+                {
+                    var task = _subscriberRuntimeInfo.OnHandle(instance, message);
+                    await task.ConfigureAwait(false);
+                }
             } catch (Exception e)
             {
                 _logger.LogError(e,"Subscriber execution failed");
@@ -101,7 +99,7 @@ namespace MessageBroker.Core.Message
                 }
             } finally
             {
-                await _instancesQueue.SendAsync(subscriberInstance).ConfigureAwait(false);
+                await _instancesQueue.SendAsync(subscriberInstances).ConfigureAwait(false);
             }
         }
 

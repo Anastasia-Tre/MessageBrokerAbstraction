@@ -29,12 +29,13 @@ namespace MessageBroker.Core.Subscriber
             {
                 throw new ConfigurationMessageBrokerException($"{nameof(subscriberSettings.MessageType)} is not set on the {subscriberSettings}");
             }
-            SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(nameof(IMessageHandler<object>.HandleMessage), new[] { subscriberSettings.MessageType, typeof(string) });
+            //SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(nameof(IMessageHandler<object>.HandleMessage), new[] { subscriberSettings.MessageType, typeof(string) });
+            SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(nameof(ISubscriber<object>.OnHandle), new[] { subscriberSettings.MessageType });
         }
 
         public Task OnHandle(object subscriberInstance, object message)
         {
-            return (Task)SubscriberOnHandleMethod.Invoke(subscriberInstance, new[] { message, SubscriberSettings.Topic });
+            return (Task)SubscriberOnHandleMethod.Invoke(subscriberInstance, new[] { message });
         }
 
         public object GetResponseValue(Task task)

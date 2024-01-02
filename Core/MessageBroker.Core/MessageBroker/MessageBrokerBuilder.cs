@@ -1,4 +1,6 @@
 ﻿using MessageBroker.Core.Exceptions;
+using MessageBroker.Core.Publisher;
+using MessageBroker.Core.Subscriber;
 using Microsoft.Extensions.DependencyInjection;
 using Serialization.Core;
 
@@ -16,6 +18,47 @@ public class MessageBrokerBuilder
 
     public static MessageBrokerBuilder Create() => new();
 
+    public MessageBrokerBuilder SetPublisher<T>(Action<PublisherBuilder<T>> builder)
+    {
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+        var item = new PublisherSettings();
+        builder(new PublisherBuilder<T>(item));
+        Settings.Publishers.Add(item);
+        return this;
+    }
+
+    public MessageBrokerBuilder SetPublisher(Type messageType, Action<PublisherBuilder<object>> builder)
+    {
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+        var item = new PublisherSettings();
+        builder(new PublisherBuilder<object>(item, messageType));
+        Settings.Publishers.Add(item);
+        return this;
+    }
+
+    public MessageBrokerBuilder SetSubscriber<TMessage>(Action<SubscriberBuilder<TMessage>> builder)
+    {
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+        var b = new SubscriberBuilder<TMessage>(Settings);
+        builder(b);
+
+        if (b.SubscriberSettings.SubscriberType is null)
+        {
+            b.WithSubscriber<ISubscriber<TMessage>>();
+        }
+        return this;
+    }
+
+    public MessageBrokerBuilder SetSubscriber(Type messageType, Action<SubscriberBuilder<object>> builder)
+    {
+        if (builder == null) throw new ArgumentNullException(nameof(builder));
+
+        builder(new SubscriberBuilder<object>(Settings, messageType));
+        return this;
+    }
 
     public MessageBrokerBuilder WithSerializer(IMessageSerializer serializer)
     {
