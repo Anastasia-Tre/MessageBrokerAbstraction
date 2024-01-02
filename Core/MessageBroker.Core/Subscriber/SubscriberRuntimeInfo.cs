@@ -1,46 +1,41 @@
-﻿using MessageBroker.Core.Exceptions;
-using MessageBroker.Core.Message;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
+using MessageBroker.Core.Exceptions;
 
-namespace MessageBroker.Core.Subscriber
+namespace MessageBroker.Core.Subscriber;
+
+public class SubscriberRuntimeInfo
 {
-    public class SubscriberRuntimeInfo
+    public SubscriberRuntimeInfo(SubscriberSettings subscriberSettings)
     {
-        public SubscriberSettings SubscriberSettings { get; }
+        SubscriberSettings = subscriberSettings;
 
-        public MethodInfo SubscriberOnHandleMethod { get; }
+        if (subscriberSettings.SubscriberType == null)
+            throw new ConfigurationMessageBrokerException(
+                $"{nameof(subscriberSettings.SubscriberType)} is not set on the {subscriberSettings}");
 
-        public PropertyInfo TaskResultProperty { get; }
+        if (subscriberSettings.MessageType == null)
+            throw new ConfigurationMessageBrokerException(
+                $"{nameof(subscriberSettings.MessageType)} is not set on the {subscriberSettings}");
 
-        public SubscriberRuntimeInfo(SubscriberSettings subscriberSettings)
-        {
-            SubscriberSettings = subscriberSettings;
+        SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(
+            nameof(ISubscriber<object>.OnHandle),
+            new[] { subscriberSettings.MessageType })!;
+    }
 
-            if (subscriberSettings.SubscriberType == null)
-            {
-                throw new ConfigurationMessageBrokerException($"{nameof(subscriberSettings.SubscriberType)} is not set on the {subscriberSettings}");
-            }
-            if (subscriberSettings.MessageType == null)
-            {
-                throw new ConfigurationMessageBrokerException($"{nameof(subscriberSettings.MessageType)} is not set on the {subscriberSettings}");
-            }
-            //SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(nameof(IMessageHandler<object>.HandleMessage), new[] { subscriberSettings.MessageType, typeof(string) });
-            SubscriberOnHandleMethod = subscriberSettings.SubscriberType.GetMethod(nameof(ISubscriber<object>.OnHandle), new[] { subscriberSettings.MessageType });
-        }
+    public SubscriberSettings SubscriberSettings { get; }
 
-        public Task OnHandle(object subscriberInstance, object message)
-        {
-            return (Task)SubscriberOnHandleMethod.Invoke(subscriberInstance, new[] { message });
-        }
+    public MethodInfo SubscriberOnHandleMethod { get; }
 
-        public object GetResponseValue(Task task)
-        {
-            return TaskResultProperty.GetValue(task);
-        }
+    public PropertyInfo TaskResultProperty { get; }
+
+    public Task OnHandle(object subscriberInstance, object message)
+    {
+        return (Task)SubscriberOnHandleMethod.Invoke(subscriberInstance,
+            new[] { message })!;
+    }
+
+    public object GetResponseValue(Task task)
+    {
+        return TaskResultProperty.GetValue(task)!;
     }
 }

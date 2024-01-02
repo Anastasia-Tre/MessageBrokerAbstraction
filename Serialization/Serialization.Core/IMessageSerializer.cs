@@ -2,6 +2,6 @@
 
 public interface IMessageSerializer
 {
-    byte[] Serialize(Type t, object message);
+    byte[] Serialize(Type? t, object message);
     object Deserialize(Type t, byte[] payload);
 }

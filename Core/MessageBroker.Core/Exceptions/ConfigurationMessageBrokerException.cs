@@ -10,7 +10,8 @@ public class ConfigurationMessageBrokerException : MessageBrokerException
     {
     }
 
-    public ConfigurationMessageBrokerException(string message, Exception innerException) : base(message, innerException)
+    public ConfigurationMessageBrokerException(string message,
+        Exception innerException) : base(message, innerException)
     {
     }
 }

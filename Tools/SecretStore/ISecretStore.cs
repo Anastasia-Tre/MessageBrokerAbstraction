@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SecretStore;
 
-namespace SecretStore
+public interface ISecretStore
 {
-    public interface ISecretStore
-    {
-        string GetSecret(string name);
-    }
+    string? GetSecret(string name);
 }

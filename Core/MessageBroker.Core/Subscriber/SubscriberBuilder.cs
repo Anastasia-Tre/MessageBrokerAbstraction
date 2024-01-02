@@ -4,21 +4,18 @@ namespace MessageBroker.Core.Subscriber;
 
 public class SubscriberBuilder<T>
 {
-    //public Type MessageType { get; }
-
-    public MessageBrokerSettings Settings { get; }
-
     public SubscriberSettings SubscriberSettings;
 
-    public SubscriberBuilder(MessageBrokerSettings settings, Type messageType, string topic = null)
+    public SubscriberBuilder(MessageBrokerSettings settings, Type messageType,
+        string? topic = null)
     {
-        Settings = settings ?? throw new ArgumentNullException(nameof(settings));
-        //MessageType = messageType;
+        Settings = settings ??
+                   throw new ArgumentNullException(nameof(settings));
 
         SubscriberSettings = new SubscriberSettings
         {
             MessageType = messageType,
-            Topic = topic,
+            Topic = topic
         };
         Settings.Subscribers.Add(SubscriberSettings);
     }
@@ -28,18 +25,20 @@ public class SubscriberBuilder<T>
     {
     }
 
-    public SubscriberBuilder<T> Topic(string topic)
+    public MessageBrokerSettings Settings { get; }
+
+    public SubscriberBuilder<T> Topic(string? topic)
     {
         SubscriberSettings.Topic = topic;
         return this;
     }
 
-
     public SubscriberBuilder<T> WithSubscriber<TSubscriber>()
         where TSubscriber : class, ISubscriber<T>
     {
         SubscriberSettings.SubscriberType = typeof(TSubscriber);
-        SubscriberSettings.SubscriberMethod = (consumer, message) => ((ISubscriber<T>)consumer).OnHandle((T)message);
+        SubscriberSettings.SubscriberMethod = (subscriber, message) =>
+            ((ISubscriber<T>)subscriber).OnHandle((T)message);
 
         SubscriberSettings.Invokers.Add(SubscriberSettings);
 
@@ -50,22 +49,25 @@ public class SubscriberBuilder<T>
         where TSubscriber : class, ISubscriber<TMessage>
         where TMessage : T
     {
-        var invoker = new SubscriberSettings()
+        var invoker = new SubscriberSettings
         {
-            SubscriberMethod = (consumer, message) => ((ISubscriber<TMessage>)consumer).OnHandle((TMessage)message)
+            SubscriberMethod = (subscriber, message) =>
+                ((ISubscriber<TMessage>)subscriber).OnHandle((TMessage)message)
         };
         SubscriberSettings.Invokers.Add(invoker);
 
         return this;
     }
 
-    public SubscriberBuilder<T> WithSubscriber<TSubscriber>(Func<TSubscriber, T, Task> consumerMethod)
+    public SubscriberBuilder<T> WithSubscriber<TSubscriber>(
+        Func<TSubscriber, T, Task> subscriberMethod)
         where TSubscriber : class
     {
-        if (consumerMethod == null) throw new ArgumentNullException(nameof(consumerMethod));
+        ArgumentNullException.ThrowIfNull(subscriberMethod);
 
         SubscriberSettings.SubscriberType = typeof(TSubscriber);
-        SubscriberSettings.SubscriberMethod = (consumer, message) => consumerMethod((TSubscriber)consumer, (T)message);
+        SubscriberSettings.SubscriberMethod = (subscriber, message) =>
+            subscriberMethod((TSubscriber)subscriber, (T)message);
 
         SubscriberSettings.Invokers.Add(SubscriberSettings);
 

@@ -2,5 +2,5 @@
 
 public interface IPublisher
 {
-    Task Publish<TMessage>(TMessage message, string name = null);
+    Task Publish<TMessage>(TMessage message, string? name = null);
 }

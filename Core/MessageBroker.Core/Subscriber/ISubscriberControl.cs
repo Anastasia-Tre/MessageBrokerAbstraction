@@ -2,9 +2,7 @@
 
 public interface ISubscriberControl
 {
-    Task Start();
-
     bool IsStarted { get; }
-
+    Task Start();
     Task Stop();
 }

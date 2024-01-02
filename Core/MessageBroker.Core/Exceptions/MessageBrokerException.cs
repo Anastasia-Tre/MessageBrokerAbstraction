@@ -10,7 +10,8 @@ public class MessageBrokerException : Exception
     {
     }
 
-    public MessageBrokerException(string message, Exception innerException) : base(message, innerException)
+    public MessageBrokerException(string message, Exception innerException) :
+        base(message, innerException)
     {
     }
 }

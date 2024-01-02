@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MessageBroker.Core.MessageBroker;
+﻿using MessageBroker.Core.MessageBroker;
 
-namespace Provider.Redis
+namespace Provider.Redis;
+
+public static class MessageBrokerBuilderExtensions
 {
-    public static class MessageBrokerBuilderExtensions
+    public static MessageBrokerBuilder WithProviderRedis(
+        this MessageBrokerBuilder mbb,
+        Action<RedisMessageBrokerSettings> configure)
     {
-        public static MessageBrokerBuilder WithProviderRedis(this MessageBrokerBuilder mbb, Action<RedisMessageBrokerSettings> configure)
-        {
-            if (mbb == null) throw new ArgumentNullException(nameof(mbb));
-            if (configure == null) throw new ArgumentNullException(nameof(configure));
+        ArgumentNullException.ThrowIfNull(mbb);
+        ArgumentNullException.ThrowIfNull(configure);
 
-            var providerSettings = new RedisMessageBrokerSettings();
-            configure(providerSettings);
+        var providerSettings = new RedisMessageBrokerSettings();
+        configure(providerSettings);
 
-            return mbb.WithProvider(settings => new RedisMessageBroker(settings, providerSettings));
-        }
+        return mbb.WithProvider(settings =>
+            new RedisMessageBroker(settings, providerSettings));
     }
 }

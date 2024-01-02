@@ -2,9 +2,9 @@
 
 public class PublisherSettings
 {
-    public Type MessageType { get; set; }
+    public Type? MessageType { get; set; }
 
-    public string DefaultTopic { get; set; }
+    public string? DefaultTopic { get; set; }
 
     public TimeSpan? ExpiredTimeout { get; set; }
 }

@@ -1,14 +1,9 @@
-﻿using SecretStore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace SecretStore;
 
 public static class Secrets
 {
-    private static ISecretStore _store;
-    public static SecretService Service { get; private set; }
+    private static ISecretStore? _store;
+    public static SecretService? Service { get; private set; }
 
     public static void Load(string path)
     {

@@ -8,19 +8,27 @@ namespace MessageBroker.Core.MessageBroker;
 
 public class MessageBrokerBuilder
 {
-    public MessageBrokerSettings Settings { get; } = new();
-    private Func<MessageBrokerSettings, IMessageBroker> _factory;
-
-    public IList<Action<IServiceCollection>> PostConfigurationActions { get; } = new List<Action<IServiceCollection>>();
+    private Func<MessageBrokerSettings, IMessageBroker>? _factory;
 
 
-    protected MessageBrokerBuilder() {}
-
-    public static MessageBrokerBuilder Create() => new();
-
-    public MessageBrokerBuilder SetPublisher<T>(Action<PublisherBuilder<T>> builder)
+    protected MessageBrokerBuilder()
     {
-        if (builder == null) throw new ArgumentNullException(nameof(builder));
+    }
+
+    public MessageBrokerSettings Settings { get; } = new();
+
+    public IList<Action<IServiceCollection>> PostConfigurationActions { get; } =
+        new List<Action<IServiceCollection>>();
+
+    public static MessageBrokerBuilder Create()
+    {
+        return new MessageBrokerBuilder();
+    }
+
+    public MessageBrokerBuilder SetPublisher<T>(
+        Action<PublisherBuilder<T>> builder)
+    {
+        ArgumentNullException.ThrowIfNull(builder);
 
         var item = new PublisherSettings();
         builder(new PublisherBuilder<T>(item));
@@ -28,9 +36,10 @@ public class MessageBrokerBuilder
         return this;
     }
 
-    public MessageBrokerBuilder SetPublisher(Type messageType, Action<PublisherBuilder<object>> builder)
+    public MessageBrokerBuilder SetPublisher(Type? messageType,
+        Action<PublisherBuilder<object>> builder)
     {
-        if (builder == null) throw new ArgumentNullException(nameof(builder));
+        ArgumentNullException.ThrowIfNull(builder);
 
         var item = new PublisherSettings();
         builder(new PublisherBuilder<object>(item, messageType));
@@ -38,23 +47,23 @@ public class MessageBrokerBuilder
         return this;
     }
 
-    public MessageBrokerBuilder SetSubscriber<TMessage>(Action<SubscriberBuilder<TMessage>> builder)
+    public MessageBrokerBuilder SetSubscriber<TMessage>(
+        Action<SubscriberBuilder<TMessage>> builder)
     {
-        if (builder == null) throw new ArgumentNullException(nameof(builder));
+        ArgumentNullException.ThrowIfNull(builder);
 
         var b = new SubscriberBuilder<TMessage>(Settings);
         builder(b);
 
         if (b.SubscriberSettings.SubscriberType is null)
-        {
             b.WithSubscriber<ISubscriber<TMessage>>();
-        }
         return this;
     }
 
-    public MessageBrokerBuilder SetSubscriber(Type messageType, Action<SubscriberBuilder<object>> builder)
+    public MessageBrokerBuilder SetSubscriber(Type messageType,
+        Action<SubscriberBuilder<object>> builder)
     {
-        if (builder == null) throw new ArgumentNullException(nameof(builder));
+        ArgumentNullException.ThrowIfNull(builder);
 
         builder(new SubscriberBuilder<object>(Settings, messageType));
         return this;
@@ -66,13 +75,15 @@ public class MessageBrokerBuilder
         return this;
     }
 
-    public MessageBrokerBuilder WithDependencyResolver(IServiceProvider serviceProvider)
+    public MessageBrokerBuilder WithDependencyResolver(
+        IServiceProvider? serviceProvider)
     {
         Settings.ServiceProvider = serviceProvider;
         return this;
     }
 
-    public MessageBrokerBuilder WithProvider(Func<MessageBrokerSettings, IMessageBroker> provider)
+    public MessageBrokerBuilder WithProvider(
+        Func<MessageBrokerSettings, IMessageBroker>? provider)
     {
         _factory = provider;
         return this;
@@ -87,7 +98,8 @@ public class MessageBrokerBuilder
     public IMessageBroker Build()
     {
         if (_factory is null)
-            throw new ConfigurationMessageBrokerException("The broker provider was not configured. Check the MessageBroker configuration and ensure the has the '.WithProviderXxx()' setting for one of the available providers.");
+            throw new ConfigurationMessageBrokerException(
+                "The broker provider was not configured. Check the MessageBroker configuration and ensure the has the '.WithProviderXxx()' setting for one of the available providers.");
 
         return _factory(Settings);
     }
