@@ -18,9 +18,9 @@ public class MessageHandler<TMessage> : IMessageHandler<TMessage>
     protected IReadOnlyCollection<ISubscriberInvokerSettings> _invokers;
 
     public MessageHandler(
-            SubscriberSettings subscriberSettings,
-            MessageBrokerBase messageBroker,
-            Func<TMessage, byte[]> messagePayloadProvider)
+        SubscriberSettings subscriberSettings,
+        MessageBrokerBase messageBroker,
+        Func<TMessage, byte[]> messagePayloadProvider)
     {
         _logger = messageBroker.LoggerFactory
             .CreateLogger<MessageHandler<TMessage>>();
@@ -54,7 +54,7 @@ public class MessageHandler<TMessage> : IMessageHandler<TMessage>
         var message =
             MessageBroker.Serializer.Deserialize(SubscriberSettings.MessageType,
                 msgPayload);
-        
+
         if (expires.HasValue)
         {
             var currentTime = MessageBroker.CurrentTime;
@@ -71,7 +71,7 @@ public class MessageHandler<TMessage> : IMessageHandler<TMessage>
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex,"Method {MethodName} failed",
+                    _logger.LogError(ex, "Method {MethodName} failed",
                         nameof(ISubscriberEvent.OnMessageExpired));
                 }
 

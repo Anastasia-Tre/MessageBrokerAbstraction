@@ -6,8 +6,6 @@ public abstract class SubscriberBase : IAsyncDisposable, ISubscriberControl,
     ISubscriberEvent
 {
     private CancellationTokenSource? _cancellationTokenSource;
-    protected CancellationToken CancellationToken =>
-        _cancellationTokenSource!.Token;
 
     private bool _starting;
     private bool _stopping;
@@ -16,6 +14,9 @@ public abstract class SubscriberBase : IAsyncDisposable, ISubscriberControl,
     {
         Logger = logger;
     }
+
+    protected CancellationToken CancellationToken =>
+        _cancellationTokenSource!.Token;
 
     protected ILogger Logger { get; }
 

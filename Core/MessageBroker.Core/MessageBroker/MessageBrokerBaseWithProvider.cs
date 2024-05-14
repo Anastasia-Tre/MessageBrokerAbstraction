@@ -7,7 +7,8 @@ public abstract class MessageBrokerBase<TProviderSettings> : MessageBrokerBase
         TProviderSettings providerSettings) : base(settings)
     {
         ProviderSettings = providerSettings ??
-                           throw new ArgumentNullException(nameof(providerSettings));
+                           throw new ArgumentNullException(
+                               nameof(providerSettings));
     }
 
     public TProviderSettings ProviderSettings { get; }

@@ -10,20 +10,10 @@ namespace MessageBroker.Core.MessageBroker;
 public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
 {
     protected readonly ILogger Logger;
-    public ILoggerFactory LoggerFactory { get; }
 
     private CancellationTokenSource? _cancellationTokenSource = new();
-    public CancellationToken CancellationToken =>
-        _cancellationTokenSource!.Token;
 
     private IMessageSerializer? _serializer;
-    public virtual IMessageSerializer Serializer
-    {
-        get {
-            _serializer ??= GetSerializer();
-            return _serializer;
-        }
-    }
 
     protected MessageBrokerBase(MessageBrokerSettings settings)
     {
@@ -35,7 +25,8 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
             new Dictionary<Type?, PublisherSettings>();
         foreach (var publisherSettings in settings.Publishers)
         {
-            if (PublisherSettingsByMessageType.ContainsKey(publisherSettings.MessageType))
+            if (PublisherSettingsByMessageType.ContainsKey(publisherSettings
+                    .MessageType))
                 throw new InvalidConfigurationMessageBrokerException(
                     $"The produced message type '{publisherSettings.MessageType}' was declared more than once (check the {nameof(MessageBrokerBuilder)} configuration)");
             PublisherSettingsByMessageType.Add(publisherSettings.MessageType,
@@ -47,9 +38,24 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         Logger = LoggerFactory.CreateLogger<MessageBrokerBase>();
     }
 
+    public ILoggerFactory LoggerFactory { get; }
+
+    public CancellationToken CancellationToken =>
+        _cancellationTokenSource!.Token;
+
+    public virtual IMessageSerializer Serializer
+    {
+        get
+        {
+            _serializer ??= GetSerializer();
+            return _serializer;
+        }
+    }
+
     public virtual MessageBrokerSettings Settings { get; }
 
-    protected IDictionary<Type?, PublisherSettings> PublisherSettingsByMessageType { get; }
+    protected IDictionary<Type?, PublisherSettings>
+        PublisherSettingsByMessageType { get; }
 
     public virtual DateTimeOffset CurrentTime => DateTimeOffset.UtcNow;
 
@@ -84,7 +90,8 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
     protected void AssertActive()
     {
         if (IsDisposed || IsDisposing)
-            throw new MessageBrokerException("The message broker is disposed at this time");
+            throw new MessageBrokerException(
+                "The message broker is disposed at this time");
     }
 
     public abstract Task PublishToProvider(Type? messageType, object message,
@@ -124,9 +131,11 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
     protected virtual string GetDefaultName(Type? messageType,
         PublisherSettings publisherSettings)
     {
-        var name = publisherSettings.DefaultTopic ?? throw new PublishMessageBrokerException(
-                $"An attempt to produce message of type {messageType} without specifying name, but there was no default name configured. Double check your configuration.");
-        Logger.LogDebug("Applying default name {Name} for message type {MessageType}", name,
+        var name = publisherSettings.DefaultTopic ??
+                   throw new PublishMessageBrokerException(
+                       $"An attempt to produce message of type {messageType} without specifying name, but there was no default name configured. Double check your configuration.");
+        Logger.LogDebug(
+            "Applying default name {Name} for message type {MessageType}", name,
             messageType);
         return name;
     }

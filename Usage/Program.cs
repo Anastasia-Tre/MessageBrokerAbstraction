@@ -41,13 +41,11 @@ internal class Program
                             .AddJsonSerializer()
                             .WithProviderRedis(cfg =>
                                 cfg.ConnectionString = redisConnectionString)
-
                             .SetPublisher<AddCommand>(x =>
                                 x.DefaultTopic("AddCommand"))
                             .SetSubscriber<AddCommand>(x =>
                                 x.Topic("AddCommand")
                                     .WithSubscriber<AddCommandSubscriber>())
-
                             .SetPublisher<SubtractCommand>(x =>
                                 x.DefaultTopic("SubtractCommand"))
                             .SetSubscriber<SubtractCommand>(x =>
@@ -100,9 +98,11 @@ public class MainProgram : IHostedService
             try
             {
                 await _broker.Publish(new AddCommand
-                    { OperationId = opId, Left = a, Right = b }).ConfigureAwait(false);
+                        { OperationId = opId, Left = a, Right = b })
+                    .ConfigureAwait(false);
                 await _broker.Publish(new SubtractCommand
-                    { OperationId = opId, Left = a, Right = b }).ConfigureAwait(false);
+                        { OperationId = opId, Left = a, Right = b })
+                    .ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -118,7 +118,8 @@ public class AddCommandSubscriber : ISubscriber<AddCommand>
 {
     public async Task OnHandle(AddCommand message)
     {
-        Console.WriteLine($"Subscriber: Adding {message.Left} and {message.Right} gives {message.Left + message.Right}");
+        Console.WriteLine(
+            $"Subscriber: Adding {message.Left} and {message.Right} gives {message.Left + message.Right}");
         await Task.Delay(500).ConfigureAwait(false); // Simulate some work
     }
 }
@@ -127,7 +128,8 @@ public class SubtractCommandSubscriber : ISubscriber<SubtractCommand>
 {
     public async Task OnHandle(SubtractCommand message)
     {
-        Console.WriteLine($"Subscriber: Subracting {message.Left} and {message.Right} gives {message.Left - message.Right}");
+        Console.WriteLine(
+            $"Subscriber: Subracting {message.Left} and {message.Right} gives {message.Left - message.Right}");
         await Task.Delay(500).ConfigureAwait(false); // Simulate some work
     }
 }
