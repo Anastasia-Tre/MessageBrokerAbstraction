@@ -157,31 +157,31 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
 
     public void Dispose()
     {
-        Dispose(true);
+        DisposeInternal(true);
         GC.SuppressFinalize(this);
     }
 
-    protected void Dispose(bool disposing)
+    protected void DisposeInternal(bool disposing)
     {
         if (disposing)
-            DisposeAsyncInternal().ConfigureAwait(false).GetAwaiter()
+            DisposeAsyncImpl().ConfigureAwait(false).GetAwaiter()
                 .GetResult();
     }
 
     public async ValueTask DisposeAsync()
     {
-        await DisposeAsyncInternal().ConfigureAwait(false);
+        await DisposeAsyncImpl().ConfigureAwait(false);
         GC.SuppressFinalize(this);
     }
 
-    private async ValueTask DisposeAsyncInternal()
+    private async ValueTask DisposeAsyncImpl()
     {
         if (!IsDisposed && !IsDisposing)
         {
             IsDisposing = true;
             try
             {
-                await DisposeAsyncCore().ConfigureAwait(false);
+                await DisposeInternalAsync().ConfigureAwait(false);
             }
             finally
             {
@@ -191,7 +191,7 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         }
     }
 
-    protected virtual async ValueTask DisposeAsyncCore()
+    protected virtual async ValueTask DisposeInternalAsync()
     {
         if (_cancellationTokenSource != null)
         {
