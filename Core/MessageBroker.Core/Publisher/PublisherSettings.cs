@@ -10,7 +10,7 @@ public class PublisherSettings
 
     public IDictionary<string, object> Properties { get; protected set; }
 
-    protected PublisherSettings()
+    public PublisherSettings()
     {
         Properties = new Dictionary<string, object>();
     }
