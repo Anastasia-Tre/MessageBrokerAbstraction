@@ -1,4 +1,6 @@
-﻿namespace MessageBroker.Core.Subscriber;
+﻿using MessageBroker.Core.MessageBroker;
+
+namespace MessageBroker.Core.Subscriber;
 
 public interface ISubscriberInvokerSettings
 {
@@ -9,7 +11,7 @@ public interface ISubscriberInvokerSettings
     Func<object, object, Task> SubscriberMethod { get; set; }
 }
 
-public class SubscriberSettings : ISubscriberEvent, ISubscriberInvokerSettings
+public class SubscriberSettings : BaseSettings, ISubscriberEvent, ISubscriberInvokerSettings
 {
     internal SubscriberSettings()
     {
