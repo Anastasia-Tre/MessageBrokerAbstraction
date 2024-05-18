@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SecretStore", "Tools\Secret
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.RabbitMQ", "Provider\Provider.RabbitMQ\Provider.RabbitMQ.csproj", "{C7E088D0-7C96-46CE-ADE2-C2E6BA75F4F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Kafka", "Provider\Provider.Kafka\Provider.Kafka.csproj", "{B49CE2E9-2DC3-4244-8721-1F869702B83B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Kafka", "Provider\Provider.Kafka\Provider.Kafka.csproj", "{B49CE2E9-2DC3-4244-8721-1F869702B83B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Memory", "Provider\Provider.Memory\Provider.Memory.csproj", "{6AC5968F-5991-49FD-971A-5F0A4D610429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +67,10 @@ Global
 		{B49CE2E9-2DC3-4244-8721-1F869702B83B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B49CE2E9-2DC3-4244-8721-1F869702B83B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B49CE2E9-2DC3-4244-8721-1F869702B83B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{1213774A-0334-4F03-BAD6-7925DDA89919} = {76CC5A85-07F3-4BFC-92D3-B94F4FF40F5D}
 		{C7E088D0-7C96-46CE-ADE2-C2E6BA75F4F5} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 		{B49CE2E9-2DC3-4244-8721-1F869702B83B} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
+		{6AC5968F-5991-49FD-971A-5F0A4D610429} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
