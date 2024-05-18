@@ -1,5 +1,6 @@
 ﻿using MessageBroker.Core.Exceptions;
 using MessageBroker.Core.Publisher;
+using MessageBroker.Core.Subscriber;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -59,6 +60,10 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
 
     public virtual DateTimeOffset CurrentTime => DateTimeOffset.UtcNow;
 
+    private readonly List<SubscriberBase> _subscribers = new();
+    public IReadOnlyCollection<SubscriberBase> Subscribers => _subscribers;
+    protected void AddSubscriber(SubscriberBase subscriber) => _subscribers.Add(subscriber);
+
     public abstract Task Start();
     public abstract bool IsStarted { get; set; }
     public abstract Task Stop();
@@ -92,6 +97,30 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         if (IsDisposed || IsDisposing)
             throw new MessageBrokerException(
                 "The message broker is disposed at this time");
+    }
+
+    protected void OnBuildProvider()
+    {
+        AssertSettings(Settings);
+
+        Build();
+
+        if (Settings.AutoStartSubscribers)
+        {
+            _ = Task.Run(async () => {
+                try
+                {
+                    await Start().ConfigureAwait(false);
+                } catch (Exception e)
+                {
+                    Logger.LogError(e, "Could not auto start consumers");
+                }
+            });
+        }
+    }
+
+    protected virtual void Build()
+    {
     }
 
     public abstract Task PublishToProvider(Type? messageType, object message,

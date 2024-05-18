@@ -45,6 +45,17 @@ public class SubscriberBuilder<T>
         return this;
     }
 
+    public SubscriberBuilder<T> WithSubscriber(Type subscriberType)
+    {
+        SubscriberSettings.SubscriberType = subscriberType;
+        SubscriberSettings.SubscriberMethod = (subscriber, message) =>
+            ((ISubscriber<T>)subscriber).OnHandle((T)message);
+
+        SubscriberSettings.Invokers.Add(SubscriberSettings);
+
+        return this;
+    }
+
     public SubscriberBuilder<T> WithSubscriber<TSubscriber, TMessage>()
         where TSubscriber : class, ISubscriber<TMessage>
         where TMessage : T

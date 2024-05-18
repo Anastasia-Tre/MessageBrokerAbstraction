@@ -13,10 +13,13 @@ public class MessageBrokerSettings
         Publishers = new List<PublisherSettings>();
         Subscribers = new List<SubscriberSettings>();
         SerializerType = typeof(IMessageSerializer);
+        AutoStartSubscribers = true;
     }
 
     public Type SerializerType { get; set; }
 
     public IList<PublisherSettings> Publishers { get; }
     public IList<SubscriberSettings> Subscribers { get; }
+
+    public bool AutoStartSubscribers { get; set; }
 }

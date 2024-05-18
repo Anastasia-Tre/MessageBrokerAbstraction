@@ -15,6 +15,12 @@ public class MessageBrokerBuilder
     {
     }
 
+    protected MessageBrokerBuilder(MessageBrokerBuilder other)
+    {
+        Settings = other.Settings;
+        PostConfigurationActions = other.PostConfigurationActions;
+    }
+
     public MessageBrokerSettings Settings { get; } = new();
 
     public IList<Action<IServiceCollection>> PostConfigurationActions { get; } =
