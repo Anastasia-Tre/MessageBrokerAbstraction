@@ -71,7 +71,7 @@ public class
         return Task.CompletedTask;
     }
 
-    protected override void Build()
+    protected override async Task Build()
     {
         base.Build();
 
