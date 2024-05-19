@@ -16,9 +16,11 @@ MessageBrokerAbstraction is a versatile and flexible message broker client facad
 
 ## Providers
 
+- **Memory**
 - **Redis**
+- **MQTT**
 - **RabbitMQ** (in development)
-- **Kafka** (in plan)
+- **Kafka** (in development)
 
 ## Sample
 
