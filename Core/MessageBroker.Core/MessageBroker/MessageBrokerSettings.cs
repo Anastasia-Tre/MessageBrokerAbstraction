@@ -4,7 +4,7 @@ using Serialization.Core;
 
 namespace MessageBroker.Core.MessageBroker;
 
-public class MessageBrokerSettings
+public class MessageBrokerSettings : BaseSettings
 {
     public IServiceProvider? ServiceProvider;
 

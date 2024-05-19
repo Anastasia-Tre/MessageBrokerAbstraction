@@ -122,7 +122,7 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
             });
     }
 
-    protected virtual void Build()
+    protected virtual async Task Build()
     {
     }
 

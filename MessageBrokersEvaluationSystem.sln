@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Kafka", "Provider\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Memory", "Provider\Provider.Memory\Provider.Memory.csproj", "{6AC5968F-5991-49FD-971A-5F0A4D610429}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Mqtt", "Provider\Provider.Mqtt\Provider.Mqtt.csproj", "{82E31C2B-CCFD-4D22-8D09-B82E3CD70081}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AC5968F-5991-49FD-971A-5F0A4D610429}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82E31C2B-CCFD-4D22-8D09-B82E3CD70081}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82E31C2B-CCFD-4D22-8D09-B82E3CD70081}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82E31C2B-CCFD-4D22-8D09-B82E3CD70081}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82E31C2B-CCFD-4D22-8D09-B82E3CD70081}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -84,6 +90,7 @@ Global
 		{C7E088D0-7C96-46CE-ADE2-C2E6BA75F4F5} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 		{B49CE2E9-2DC3-4244-8721-1F869702B83B} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 		{6AC5968F-5991-49FD-971A-5F0A4D610429} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
+		{82E31C2B-CCFD-4D22-8D09-B82E3CD70081} = {308134E5-A9A4-4E85-9344-4F3506C1073D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {905A0649-8F00-4CAD-8623-12CED3AEDA63}
