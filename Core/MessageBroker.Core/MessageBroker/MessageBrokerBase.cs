@@ -10,6 +10,7 @@ namespace MessageBroker.Core.MessageBroker;
 
 public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
 {
+    private readonly List<SubscriberBase> _subscribers = new();
     protected readonly ILogger Logger;
 
     private CancellationTokenSource? _cancellationTokenSource = new();
@@ -59,10 +60,7 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         PublisherSettingsByMessageType { get; }
 
     public virtual DateTimeOffset CurrentTime => DateTimeOffset.UtcNow;
-
-    private readonly List<SubscriberBase> _subscribers = new();
     public IReadOnlyCollection<SubscriberBase> Subscribers => _subscribers;
-    protected void AddSubscriber(SubscriberBase subscriber) => _subscribers.Add(subscriber);
 
     public abstract Task Start();
     public abstract bool IsStarted { get; set; }
@@ -71,6 +69,11 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
     public Task Publish<TMessage>(TMessage message, string name = null)
     {
         return Publish(message!.GetType(), message, name);
+    }
+
+    protected void AddSubscriber(SubscriberBase subscriber)
+    {
+        _subscribers.Add(subscriber);
     }
 
     protected virtual IMessageSerializer GetSerializer()
@@ -106,17 +109,17 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         Build();
 
         if (Settings.AutoStartSubscribers)
-        {
-            _ = Task.Run(async () => {
+            _ = Task.Run(async () =>
+            {
                 try
                 {
                     await Start().ConfigureAwait(false);
-                } catch (Exception e)
+                }
+                catch (Exception e)
                 {
                     Logger.LogError(e, "Could not auto start consumers");
                 }
             });
-        }
     }
 
     protected virtual void Build()

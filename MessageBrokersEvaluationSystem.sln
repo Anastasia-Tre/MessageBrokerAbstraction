@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.RabbitMQ", "Provid
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Kafka", "Provider\Provider.Kafka\Provider.Kafka.csproj", "{B49CE2E9-2DC3-4244-8721-1F869702B83B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provider.Memory", "Provider\Provider.Memory\Provider.Memory.csproj", "{6AC5968F-5991-49FD-971A-5F0A4D610429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Provider.Memory", "Provider\Provider.Memory\Provider.Memory.csproj", "{6AC5968F-5991-49FD-971A-5F0A4D610429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

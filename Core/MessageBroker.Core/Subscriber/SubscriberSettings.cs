@@ -11,7 +11,8 @@ public interface ISubscriberInvokerSettings
     Func<object, object, Task> SubscriberMethod { get; set; }
 }
 
-public class SubscriberSettings : BaseSettings, ISubscriberEvent, ISubscriberInvokerSettings
+public class SubscriberSettings : BaseSettings, ISubscriberEvent,
+    ISubscriberInvokerSettings
 {
     internal SubscriberSettings()
     {
