@@ -6,18 +6,18 @@ namespace Provider.Mqtt;
 public static class BaseSettingsExtensions
 {
     internal static BaseSettings SetMessageModifier(
-        this BaseSettings producerSettings,
+        this BaseSettings settings,
         Action<object, MqttApplicationMessage> messageModifierAction)
     {
-        producerSettings.Properties[nameof(SetMessageModifier)] =
+        settings.Properties[nameof(SetMessageModifier)] =
             messageModifierAction;
-        return producerSettings;
+        return settings;
     }
 
     internal static Action<object, MqttApplicationMessage> GetMessageModifier(
-        this BaseSettings producerSettings)
+        this BaseSettings settings)
     {
-        return producerSettings
+        return settings
             .GetOrDefault<Action<object, MqttApplicationMessage>>(
                 nameof(SetMessageModifier));
     }

@@ -102,14 +102,14 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
                 "The message broker is disposed at this time");
     }
 
-    protected void OnBuildProvider()
+    protected async Task OnBuildProvider()
     {
         AssertSettings(Settings);
 
-        Build();
+        await Build().ConfigureAwait(false);
 
         if (Settings.AutoStartSubscribers)
-            _ = Task.Run(async () =>
+            await Task.Run(async () =>
             {
                 try
                 {
@@ -122,8 +122,9 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
             });
     }
 
-    protected virtual async Task Build()
+    protected virtual Task Build()
     {
+        return Task.CompletedTask;
     }
 
     public abstract Task PublishToProvider(Type? messageType, object message,
@@ -134,7 +135,7 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
     {
         AssertActive();
 
-        name ??= GetDefaultName(messageType);
+        name ??= GetDefaultTopic(messageType);
 
         var payload = SerializeMessage(messageType, message);
 
@@ -154,21 +155,20 @@ public abstract class MessageBrokerBase : IMessageBroker, IAsyncDisposable
         return publisherSettings;
     }
 
-    protected virtual string GetDefaultName(Type? messageType)
+    protected virtual string GetDefaultTopic(Type? messageType)
     {
         var publisherSettings = GetPublisherSettings(messageType);
-        return GetDefaultName(messageType, publisherSettings);
+        return GetDefaultTopic(publisherSettings);
     }
 
-    protected virtual string GetDefaultName(Type? messageType,
-        PublisherSettings publisherSettings)
+    protected virtual string GetDefaultTopic(PublisherSettings publisherSettings)
     {
         var name = publisherSettings.DefaultTopic ??
                    throw new PublishMessageBrokerException(
-                       $"An attempt to produce message of type {messageType} without specifying name, but there was no default name configured. Double check your configuration.");
+                       $"An attempt to publish message of type {publisherSettings.MessageType} without specifying name, but there was no default name configured. Double check your configuration.");
         Logger.LogDebug(
             "Applying default name {Name} for message type {MessageType}", name,
-            messageType);
+            publisherSettings.MessageType);
         return name;
     }
 

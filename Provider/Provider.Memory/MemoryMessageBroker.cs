@@ -6,11 +6,11 @@ using Serialization.Core;
 
 namespace Provider.Memory;
 
-public class
-    MemoryMessageBroker : MessageBrokerBase<MemoryMessageBrokerSettings>
+public class MemoryMessageBroker : 
+    MessageBrokerBase<MemoryMessageBrokerSettings>
 {
     private readonly ILogger _logger;
-    private IDictionary<string, IMessageHandler<object>> _subscribersByPath;
+    private IDictionary<string, IMessageHandler<object>> _subscribersByTopic;
 
     public MemoryMessageBroker(MessageBrokerSettings settings,
         MemoryMessageBrokerSettings providerSettings)
@@ -18,21 +18,20 @@ public class
     {
         _logger = LoggerFactory.CreateLogger<MessageBrokerBase>();
 
-        OnBuildProvider();
+        _ = OnBuildProvider();
     }
 
-    private async Task ProduceInternal(object message, string path,
-        IServiceProvider currentServiceProvider)
+    private async Task ProduceInternal(object message, string? topic = null)
     {
         var messageType = message.GetType();
         var publisherSettings = GetPublisherSettings(messageType);
-        path ??=
-            GetDefaultName(publisherSettings.MessageType, publisherSettings);
-        if (!_subscribersByPath.TryGetValue(path, out var messageHandler))
+        topic ??=
+            GetDefaultTopic(publisherSettings);
+        if (!_subscribersByTopic.TryGetValue(topic, out var messageHandler))
         {
             _logger.LogDebug(
-                "No subscribers interested in message type {MessageType} on path {Path}",
-                messageType, path);
+                "No subscribers interested in message type {MessageType} on topic {Topic}",
+                messageType, topic);
             return;
         }
 
@@ -65,17 +64,16 @@ public class
     }
 
     public override Task PublishToProvider(Type? messageType, object message,
-        string name,
-        byte[]? payload)
+        string name, byte[]? payload)
     {
         return Task.CompletedTask;
     }
 
     protected override async Task Build()
     {
-        base.Build();
+        await base.Build();
 
-        _subscribersByPath = Settings.Subscribers
+        _subscribersByTopic = Settings.Subscribers
             .GroupBy(x => x.Topic)
             .ToDictionary(
                 x => x.Key,

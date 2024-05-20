@@ -10,7 +10,7 @@ namespace Provider.Mqtt;
 public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
 {
     private readonly ILogger _logger;
-    private IManagedMqttClient _mqttClient;
+    private IManagedMqttClient? _mqttClient;
 
     public MqttMessageBroker(MessageBrokerSettings settings,
         MqttMessageBrokerSettings providerSettings) : base(settings,
@@ -18,7 +18,7 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
     {
         _logger = LoggerFactory.CreateLogger<MqttMessageBroker>();
 
-        OnBuildProvider();
+        _ = OnBuildProvider();
     }
 
     public bool IsConnected => _mqttClient?.IsConnected ?? false;
@@ -34,8 +34,9 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
             .WithClientOptions(clientOptions)
             .Build();
 
-        await _mqttClient.StartAsync(managedClientOptions)
-            .ConfigureAwait(false);
+        if (_mqttClient != null)
+            await _mqttClient.StartAsync(managedClientOptions)
+                             .ConfigureAwait(false);
     }
 
     public override async Task Stop()
@@ -52,13 +53,13 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
         byte[] MessageProvider(MqttApplicationMessage transportMessage)
         {
             return (byte[])Serializer.Deserialize(transportMessage.GetType(),
-                transportMessage.PayloadSegment.Array);
+                transportMessage.PayloadSegment.Array!);
         }
 
         void AddTopicSubscriber(string topic,
             IMessageHandler<MqttApplicationMessage> messageHandler)
         {
-            _logger.LogInformation("Creating consumer for {Path}", topic);
+            _logger.LogInformation("Creating consumer for {Topic}", topic);
             var consumer = new MqttSubscriber(
                 LoggerFactory.CreateLogger<MqttSubscriber>(), topic,
                 messageHandler);
@@ -66,14 +67,14 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
         }
 
         _logger.LogInformation("Creating consumers");
-        foreach (var (path, consumerSettings) in Settings.Subscribers
+        foreach (var (topic, consumerSettings) in Settings.Subscribers
                      .GroupBy(x => x.Topic)
                      .ToDictionary(x => x.Key, x => x.ToList()))
         {
             var handler =
                 new MessageHandler<MqttApplicationMessage>(
                     consumerSettings.First(), this, MessageProvider);
-            AddTopicSubscriber(path, handler);
+            AddTopicSubscriber(topic, handler);
         }
 
         var topics = Subscribers.Cast<MqttSubscriber>().Select(x =>
@@ -99,10 +100,6 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
             .FirstOrDefault(x => x.Topic == arg.ApplicationMessage.Topic);
         if (consumer != null)
         {
-            var headers = new Dictionary<string, object>();
-            if (arg.ApplicationMessage.UserProperties != null)
-                foreach (var prop in arg.ApplicationMessage.UserProperties)
-                    headers[prop.Name] = prop.Value;
             return consumer.MessageHandler.HandleMessage(
                 arg.ApplicationMessage);
         }
@@ -111,24 +108,24 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
     }
 
     public override async Task PublishToProvider(Type? messageType,
-        object message, string path, byte[] messagePayload)
+        object message, string topic, byte[] messagePayload)
     {
-        var m = new MqttApplicationMessage
+        var mqttMessage = new MqttApplicationMessage
         {
             PayloadSegment = messagePayload,
-            Topic = path
+            Topic = topic
         };
 
         try
         {
             var messageModifier = Settings.GetMessageModifier();
-            messageModifier?.Invoke(message, m);
+            messageModifier?.Invoke(message, mqttMessage);
 
             if (messageType != null)
             {
                 var publisherSettings = GetPublisherSettings(messageType);
                 messageModifier = publisherSettings.GetMessageModifier();
-                messageModifier?.Invoke(message, m);
+                messageModifier?.Invoke(message, mqttMessage);
             }
         }
         catch (Exception e)
@@ -138,6 +135,6 @@ public class MqttMessageBroker : MessageBrokerBase<MqttMessageBrokerSettings>
                 messageType, message);
         }
 
-        await _mqttClient.EnqueueAsync(m);
+        await _mqttClient.EnqueueAsync(mqttMessage);
     }
 }
